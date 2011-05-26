@@ -28,6 +28,8 @@ static VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
   Point *point = createPoint(NUM2DBL(x), NUM2DBL(y), NUM2DBL(z));
   insert(tree, point);
 
+  free(point);
+
   return self;
 }
 
