@@ -1,9 +1,9 @@
 #include <ruby.h>
 #include "quadtree.h"
 
-static VALUE cQuadTree;
+VALUE cQuadTree;
 
-static VALUE quad_tree_init(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west) {
+VALUE quad_tree_init(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west) {
 
   //rb_define_attr(self, "north", 1, 0);
   rb_iv_set(self, "@north", north);
@@ -20,8 +20,8 @@ static VALUE quad_tree_init(VALUE self, VALUE north, VALUE south, VALUE east, VA
   return self;
 }
 
-static VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
- 
+VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
+
   QuadTree *tree;
   Data_Get_Struct(self, QuadTree, tree);
 
