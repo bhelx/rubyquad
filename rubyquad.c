@@ -33,6 +33,7 @@ VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
   return self;
 }
 
+
 VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE west) {
 
   QuadTree *tree = createQuadTree(NUM2DBL(north), NUM2DBL(south), NUM2DBL(east), NUM2DBL(west), NULL);
