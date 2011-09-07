@@ -8,6 +8,9 @@ describe "bleah" do
 
   it "should do something" do
     @quadtree.should_not == nil
+    10000.times do
+      @quadtree.insert(rand(100), rand(100), rand(100))
+    end
   end
 
 end
