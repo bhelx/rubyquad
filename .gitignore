@@ -1,2 +1,4 @@
 *.o
 *.bundle
+ext/Makefile
+.DS_Store

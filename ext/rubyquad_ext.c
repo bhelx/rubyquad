@@ -1,6 +1,12 @@
 #include <ruby.h>
 #include "quadtree.h"
 
+static VALUE quad_tree_init(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west);
+static VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z);
+VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE west);
+void Init_rubyquad();
+
+
 static VALUE cQuadTree;
 
 static VALUE quad_tree_init(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west) {

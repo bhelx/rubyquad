@@ -11,7 +11,7 @@ static QuadTree* getSubNode(QuadTree *tree, Point *point);
 static void breakTree(QuadTree *tree); 
 
 QuadTree* createQuadTree(double west, double east, double south, double north, QuadTree *parent) {
-    QuadTree *tree = (QuadTree *) malloc(sizeof(QuadTree));
+    QuadTree *tree = ALLOC(sizeof(QuadTree));
     tree->west = west;
     tree->east = east;
     tree->south = south;
@@ -29,7 +29,7 @@ QuadTree* createQuadTree(double west, double east, double south, double north, Q
 }
 
 Point* createPoint(double x, double y, double z) {
-    Point *p = (Point *) malloc(sizeof(Point));
+    Point *p = ALLOC(sizeof(Point));
     p->x = x;
     p->y = y;
     p->z = z;
@@ -37,13 +37,13 @@ Point* createPoint(double x, double y, double z) {
 }
 
 PointVector* createPointVector() {
-    PointVector *pv = (PointVector *) malloc(sizeof(PointVector));
+    PointVector *pv = ALLOC(sizeof(PointVector));
     pv->index = 0;
     return pv;
 }
 
 BoundingBox* createBoundingBox(double west, double east, double south, double north) {
-    BoundingBox *bbox = (BoundingBox *) malloc(sizeof(BoundingBox));
+    BoundingBox *bbox = ALLOC(sizeof(BoundingBox));
     bbox->west = west;
     bbox->east = east;
     bbox->north = north;
@@ -52,7 +52,7 @@ BoundingBox* createBoundingBox(double west, double east, double south, double no
 }
 
 ResultsSet* createResultsSet() {
-    ResultsSet *results = (ResultsSet *) malloc(sizeof(ResultsSet));
+    ResultsSet *results = ALLOC(sizeof(ResultsSet));
     results->index = 0;
     results->isFull = 0;
     return results;
