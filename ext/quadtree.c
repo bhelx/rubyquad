@@ -11,107 +11,113 @@ static int intersects(BoundingBox *bbox, QuadTree *tree);
 static QuadTree* getSubNode(QuadTree *tree, Point *point);
 static void breakTree(QuadTree *tree); 
 
-QuadTree* createQuadTree(double west, double east, double south, double north, QuadTree *parent) {
-    QuadTree *tree = ALLOC(QuadTree);
-    tree->west = west;
-    tree->east = east;
-    tree->south = south;
-    tree->north = north;
+QuadTree* createQuadTree(double north, double south, double east, double west, QuadTree *parent) {
+  QuadTree *tree = ALLOC(QuadTree);
+  //QuadTree *tree = (QuadTree *) malloc(sizeof(QuadTree));
 
-    tree->nW = NULL;
-    tree->sW = NULL;
-    tree->sE = NULL;
-    tree->nE = NULL;
+  tree->west = west;
+  tree->east = east;
+  tree->south = south;
+  tree->north = north;
 
-    tree->parent = parent;
-    tree->pointVector = createPointVector();
-    tree->isBroken = 0;
-    return tree;
+  tree->nW = NULL;
+  tree->sW = NULL;
+  tree->sE = NULL;
+  tree->nE = NULL;
+
+  tree->parent = parent;
+  tree->pointVector = createPointVector();
+  tree->isBroken = 0;
+  return tree;
 }
 
 Point* createPoint(double x, double y, double z) {
-    Point *p = ALLOC(Point);
-    p->x = x;
-    p->y = y;
-    p->z = z;
-    return p;
+  Point *p = ALLOC(Point);
+  //Point *p = (Point *) malloc(sizeof(Point));
+  p->x = x;
+  p->y = y;
+  p->z = z;
+  return p;
 }
 
 PointVector* createPointVector() {
-    PointVector *pv = ALLOC(PointVector);
-    pv->index = 0;
-    return pv;
+  PointVector *pv = ALLOC(PointVector);
+  //PointVector *pv = (PointVector *) malloc(sizeof(PointVector));
+  pv->index = 0;
+  return pv;
 }
 
 BoundingBox* createBoundingBox(double west, double east, double south, double north) {
-    BoundingBox *bbox = ALLOC(BoundingBox);
-    bbox->west = west;
-    bbox->east = east;
-    bbox->north = north;
-    bbox->south = south;
-    return bbox;
+  BoundingBox *bbox = ALLOC(BoundingBox);
+  //BoundingBox *bbox = (BoundingBox *) malloc(sizeof(BoundingBox));
+  bbox->west = west;
+  bbox->east = east;
+  bbox->north = north;
+  bbox->south = south;
+  return bbox;
 }
 
 ResultsSet* createResultsSet() {
-    ResultsSet *results = ALLOC(ResultsSet);
-    results->index = 0;
-    results->isFull = 0;
-    return results;
+  ResultsSet *results = ALLOC(ResultsSet);
+  //ResultsSet *results = (ResultsSet *) malloc(sizeof(ResultsSet));
+  results->index = 0;
+  results->isFull = 0;
+  return results;
 }
 
 void insert(QuadTree *tree, Point *point) {
-    if (tree->isBroken) {
-        insert(getSubNode(tree, point), point);
+  if (tree->isBroken) {
+    insert(getSubNode(tree, point), point);
+  } else {
+    if (tree->pointVector->index >= MAX_POINTS) {
+      breakTree(tree);
+      insert(tree, point); //call again w/ this point
     } else {
-        if (tree->pointVector->index >= MAX_POINTS) {
-            breakTree(tree);
-            insert(tree, point); //call again w/ this point
-        } else {
-            addPointToNode(tree, point);
-        }
+      addPointToNode(tree, point);
     }
+  }
 }
 
 
 void query(ResultsSet *results, QuadTree *tree, BoundingBox *bbox) {
-    if (tree->isBroken) { 
-        if (tree->sW && intersects(bbox, tree->sW)) {
-            query(results, tree->sW, bbox);
-        }
-        if (tree->sE && intersects(bbox, tree->sE)) {
-            query(results, tree->sE, bbox);
-        }
-        if (tree->nW && intersects(bbox, tree->nW)) {
-            query(results, tree->nW, bbox);
-        }
-        if (tree->nE && intersects(bbox, tree->nE)) {
-            query(results, tree->nE, bbox);
-        }
-    } else {//add point vector to results set, assume we have enough space for now
-        int i;
-        for (i = 0; i < tree->pointVector->index; i++) {
-            Point *p = tree->pointVector->points[i];
-            if (pointWithinBox(bbox, p)) {
-                results->points[results->index] = p;
-                results->index++;
-            }
-        }
+  if (tree->isBroken) {
+    if (tree->sW && intersects(bbox, tree->sW)) {
+      query(results, tree->sW, bbox);
     }
+    if (tree->sE && intersects(bbox, tree->sE)) {
+      query(results, tree->sE, bbox);
+    }
+    if (tree->nW && intersects(bbox, tree->nW)) {
+      query(results, tree->nW, bbox);
+    }
+    if (tree->nE && intersects(bbox, tree->nE)) {
+      query(results, tree->nE, bbox);
+    }
+  } else {//add point vector to results set, assume we have enough space for now
+    int i;
+    for (i = 0; i < tree->pointVector->index; i++) {
+      Point *p = tree->pointVector->points[i];
+      if (pointWithinBox(bbox, p)) {
+        results->points[results->index] = p;
+        results->index++;
+      }
+    }
+  }
 }
 
 /**
  * Final brute force check on points
  */
 static int pointWithinBox(BoundingBox *bbox, Point *point) {
-    return (point->x > bbox->west) && (point->x < bbox->east) && (point->y > bbox->south) && (point->y < bbox->north);
+  return (point->x > bbox->west) && (point->x < bbox->east) && (point->y > bbox->south) && (point->y < bbox->north);
 }
 
 void printResults(ResultsSet *results) {
-    int i;
-    for (i = 0; i < results->index; i++) {
-        Point *p = results->points[i];
-        printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
-    }
+  int i;
+  for (i = 0; i < results->index; i++) {
+      Point *p = results->points[i];
+      printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
+  }
 }
 
 
@@ -119,69 +125,69 @@ void printResults(ResultsSet *results) {
  * Makes deep copy of Point p
  */
 static void addPointToNode(QuadTree *tree, Point *p) {
-    Point *new = createPoint(p->x, p->y, p->z);
-    PointVector *pv = tree->pointVector;
-    pv->points[pv->index] = new;
-    pv->index++;
+  Point *new = createPoint(p->x, p->y, p->z);
+  PointVector *pv = tree->pointVector;
+  pv->points[pv->index] = new;
+  pv->index++;
 }
 
 /**
  * Clever intersect okmij
  */
 static int intersects(BoundingBox *bbox, QuadTree *tree) {
-    double d1 = bbox->east - bbox->west;
-    double d2 = tree->west - bbox->east;
-    double d3 = tree->east - tree->west;
-    double d4 = bbox->west - tree->east;
-    if (d1 < 0)
-        d1 += 360;
-    if (d2 < 0)
-        d2 += 360;
-    if (d3 < 0)
-        d3 += 360;
-    if (d4 < 0)
-        d4 += 360;
-    return ((d1 + d2 + d3 + d4) != 360);
+  double d1 = bbox->east - bbox->west;
+  double d2 = tree->west - bbox->east;
+  double d3 = tree->east - tree->west;
+  double d4 = bbox->west - tree->east;
+  if (d1 < 0)
+    d1 += 360;
+  if (d2 < 0)
+    d2 += 360;
+  if (d3 < 0)
+    d3 += 360;
+  if (d4 < 0)
+    d4 += 360;
+  return ((d1 + d2 + d3 + d4) != 360);
 }
 
 static void breakTree(QuadTree *tree) {
-    tree->isBroken = 1; //declare the node 'broken'
-    int i;
-    for (i = 0; i < MAX_POINTS; i++) {
-        insert(tree, tree->pointVector->points[i]);
-    }
-    free(tree->pointVector);
+  tree->isBroken = 1; //declare the node 'broken'
+  int i;
+  for (i = 0; i < MAX_POINTS; i++) {
+    insert(tree, tree->pointVector->points[i]);
+  }
+  free(tree->pointVector);
 }
 
 static QuadTree* getSubNode(QuadTree *tree, Point *point) {
-    double x = point->x;
-    double y = point->y;
+  double x = point->x;
+  double y = point->y;
 
-    double xMid = tree->west + ((tree->east - tree->west)*0.5);
-    double yMid = tree->south + ((tree->north - tree->south)*0.5);
-    if (x < xMid) {//left half
-        if (y < yMid) {//southwest
-            if (!tree->sW)
-                tree->sW = createQuadTree(tree->west, xMid, tree->south, yMid, tree); //create
-            return tree->sW;
-        } else {//northwest
-            if (!tree->nW)
-                tree->nW = createQuadTree(tree->west, xMid, yMid, tree->north, tree);
-            return tree->nW;
-        }
-      } else {//right half
-         if (y < yMid) {//southeast
-            if (!tree->sE)
-                tree->sE = createQuadTree(xMid, tree->east, tree->south, yMid, tree);
-            return tree->sE;
-        } else {//northeast
-            if (!tree->nE)
-                tree->nE = createQuadTree(xMid, tree->east, yMid, tree->north, tree);
-            return tree->nE;
-         }
-      }
-
-    return NULL; //should never happen right?
+  double xMid = tree->west + ((tree->east - tree->west)*0.5);
+  double yMid = tree->south + ((tree->north - tree->south)*0.5);
+  if (x < xMid) {//left half
+    if (y < yMid) {//southwest
+      if (!tree->sW)
+        tree->sW = createQuadTree(yMid, tree->south, xMid, tree->west, tree); //create
+      return tree->sW;
+    } else {//northwest
+      if (!tree->nW)
+        tree->nW = createQuadTree(tree->north, yMid, xMid, tree->west, tree);
+      return tree->nW;
+    }
+  } else {//right half
+    if (y < yMid) {//southeast
+      if (!tree->sE)
+        tree->sE = createQuadTree(yMid, tree->south, tree->east, xMid, tree);
+      return tree->sE;
+    } else {//northeast
+      if (!tree->nE)
+        tree->nE = createQuadTree(tree->north, yMid, tree->east, xMid, tree);
+      return tree->nE;
+    }
+  }
+  printf("DERP WTF! look at getSubNode() in quadtree.c \n");
+  return NULL; //should never happen right?
 }
 
 #if RUN_TESTS == 1
