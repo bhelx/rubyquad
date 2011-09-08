@@ -1,0 +1,13 @@
+= RubyQuad
+
+== Building
+
+* cd into ext
+  cd ext/
+
+* run extconf to build makefile
+  ruby extconf
+
+* run tests
+  spec spec
+
