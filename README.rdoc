@@ -7,8 +7,8 @@
 * run make
 * run tests with spec or rspec, whichever you have
 
-  cd ext/
-  ruby extconf.rb
-  make
-  cd ..
-  rspec spec
+    cd ext/
+    ruby extconf.rb
+    make
+    cd ..
+    rspec spec
