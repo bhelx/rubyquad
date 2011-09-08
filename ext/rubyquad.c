@@ -32,6 +32,43 @@ VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
   return self;
 }
 
+VALUE quad_tree_south_east(VALUE self) {
+  QuadTree *tree;
+  Data_Get_Struct(self, QuadTree, tree);
+  if (!tree->sE)
+    return Qnil;
+
+  return Data_Wrap_Struct(cQuadTree, 0, -1, tree->sE);
+
+}
+
+VALUE quad_tree_south_west(VALUE self) {
+  QuadTree *tree;
+  Data_Get_Struct(self, QuadTree, tree);
+  if (!tree->sW)
+    return Qnil;
+
+  return Data_Wrap_Struct(cQuadTree, 0, -1, tree->sW);
+}
+
+VALUE quad_tree_north_east(VALUE self) {
+  QuadTree *tree;
+  Data_Get_Struct(self, QuadTree, tree);
+  if (!tree->nE)
+    return Qnil;
+
+  return Data_Wrap_Struct(cQuadTree, 0, -1, tree->nE);
+}
+
+VALUE quad_tree_north_west(VALUE self) {
+  QuadTree *tree;
+  Data_Get_Struct(self, QuadTree, tree);
+  if (!tree->nW)
+    return Qnil;
+
+  return Data_Wrap_Struct(cQuadTree, 0, -1, tree->nW);
+}
+
 
 VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE west) {
 
@@ -55,6 +92,10 @@ void Init_rubyquad() {
   rb_define_singleton_method(cQuadTree, "new", quad_tree_new, 4);
   rb_define_method(cQuadTree, "initialize", quad_tree_init, 4);
   rb_define_method(cQuadTree, "insert", quad_tree_add_point, 3);
+  rb_define_method(cQuadTree, "south_east", quad_tree_south_east, 0);
+  rb_define_method(cQuadTree, "south_west", quad_tree_south_west, 0);
+  rb_define_method(cQuadTree, "north_east", quad_tree_north_east, 0);
+  rb_define_method(cQuadTree, "north_west", quad_tree_north_west, 0);
 
 }
 

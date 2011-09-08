@@ -115,8 +115,8 @@ static int pointWithinBox(BoundingBox *bbox, Point *point) {
 void printResults(ResultsSet *results) {
   int i;
   for (i = 0; i < results->index; i++) {
-      Point *p = results->points[i];
-      printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
+    Point *p = results->points[i];
+    printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
   }
 }
 

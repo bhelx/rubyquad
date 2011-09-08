@@ -15,6 +15,11 @@ describe QuadTree do
       lambda { @quadtree.east }.should_not raise_error
       lambda { @quadtree.west }.should_not raise_error
 
+      @quadtree.south_west.should be_nil
+      @quadtree.south_east.should be_nil
+      @quadtree.north_west.should be_nil
+      @quadtree.north_east.should be_nil
+
     end
 
     it "should be able to accept points and not blow up" do
@@ -22,6 +27,10 @@ describe QuadTree do
         args = [rand*250, rand*250, rand*250]
         @quadtree.insert(*args)
       end
+
+      # should have been broken at least once
+      (@quadtree.south_west || @quadtree.south_east || @quadtree.north_west || @quadtree.north_east).should be_true
+
     end
 
   end
