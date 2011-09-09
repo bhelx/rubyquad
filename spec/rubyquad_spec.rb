@@ -33,6 +33,16 @@ describe QuadTree do
 
     end
 
+    it 'should do proper bounding box search' do
+      10000.times do
+        args = [rand*250, rand*250, rand*250]
+        @quadtree.insert(*args)
+      end
+
+      @quadtree.points_within(100, 50, 100, 50)
+
+    end
+
   end
 
 

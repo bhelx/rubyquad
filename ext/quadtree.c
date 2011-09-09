@@ -47,7 +47,7 @@ PointVector* createPointVector() {
   return pv;
 }
 
-BoundingBox* createBoundingBox(double west, double east, double south, double north) {
+BoundingBox* createBoundingBox(double north, double south, double east, double west) {
   BoundingBox *bbox = ALLOC(BoundingBox);
   //BoundingBox *bbox = (BoundingBox *) malloc(sizeof(BoundingBox));
   bbox->west = west;
@@ -190,6 +190,7 @@ static QuadTree* getSubNode(QuadTree *tree, Point *point) {
   return NULL; //should never happen right?
 }
 
+//old tests, leaving for decoration
 #if RUN_TESTS == 1
 int main() {
     QuadTree *root;
