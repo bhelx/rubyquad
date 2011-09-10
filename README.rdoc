@@ -2,11 +2,31 @@
 
 == About
 
-I am purely doing this to learn the ruby vm and language 'the hard way' so to speak. A QuadTree is a straight forward and efficient data structure for storing and querying on spatial information. A common example of using this code might bt to create a map with lat lng points then creating bounding box queries to find the points within a specific region.
+I am purely doing this to learn the ruby vm and language 'the hard way' so to speak. A QuadTree is a straight forward and efficient data structure for storing and querying on spatial information. A common example of using this code might be to create a map with lat lng points then creating bounding box queries to find the points within a specific region.
 
 http://en.wikipedia.org/wiki/Quadtree
 
-See the specs for a quick example on how to use it
+== Using
+
+The functionality is pretty simple right now. Here is an exmaple:
+
+    # Create a tree params = (north, south, east, west)
+    @quadtree = QuadTree.new(250.0, 0, 250.0, 0.0)
+
+    # Use QuadTree#insert to insert a point params = (x, y, z) or (lat, lng, data)
+    # not the best dataset for this algorithm but works for testing
+    10000.times do
+      @quadtree.insert(rand*250, rand*250, rand*250)
+    end
+
+    # Now you can do a bounding box query, an example may be getting all the 
+    # points to display on a subregion of a map
+    points = @quadtree.points_within(100, 50, 100, 50)
+
+    # points should look something like this:
+    # points => [[x, y, z], [x, y, z], ...]
+
+
 
 == Building
 
