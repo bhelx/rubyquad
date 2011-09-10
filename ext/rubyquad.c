@@ -15,7 +15,7 @@ void Init_rubyquad() {
 
   rb_define_method(cQuadTree, "insert", quad_tree_add_point, 3);
 
-  rb_define_method(cQuadTree, "points_within", quad_tree_points_within, 4);
+  rb_define_method(cQuadTree, "points_within_flat", quad_tree_points_within, 4);
 }
 
 VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE west) {
@@ -112,16 +112,24 @@ VALUE quad_tree_points_within(VALUE self, VALUE north, VALUE south, VALUE east, 
 
   query(results, tree, bbox);
 
+  VALUE flat = rb_ary_new2(sizeof(results->points) / sizeof(double));
+
   int i;
+  Point *p;
   for (i = 0; i < results->index; i++) {
-    Point *p = results->points[i];
-    printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
+    p = results->points[i];
+    rb_ary_push(flat, DBL2NUM(p->x));
+    rb_ary_push(flat, DBL2NUM(p->y));
+    rb_ary_push(flat, DBL2NUM(p->z));
   }
 
   free(bbox);
   free(results);
 
+  return flat;
+
 }
+
 
 
 

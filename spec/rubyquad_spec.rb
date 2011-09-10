@@ -22,25 +22,29 @@ describe QuadTree do
 
     end
 
-    it "should be able to accept points and not blow up" do
+  end
+
+  describe 'when loaded' do
+
+    before :each do
+      @quadtree = QuadTree.new(250.0, 0, 250.0, 0.0)
       10000.times do
         args = [rand*250, rand*250, rand*250]
         @quadtree.insert(*args)
       end
+    end
 
+    it "should be able to accept points and not blow up" do
       # should have been broken at least once
-      (@quadtree.south_west || @quadtree.south_east || @quadtree.north_west || @quadtree.north_east).should be_true
-
+      quadrant = @quadtree.south_west || @quadtree.south_east || @quadtree.north_west || @quadtree.north_east
+      quadrant.should_not be_nil
     end
 
     it 'should do proper bounding box search' do
-      10000.times do
-        args = [rand*250, rand*250, rand*250]
-        @quadtree.insert(*args)
-      end
+      points = @quadtree.points_within(100, 50, 100, 50)
 
-      @quadtree.points_within(100, 50, 100, 50)
-
+      # good enough test for now
+      points.should_not be_empty
     end
 
   end

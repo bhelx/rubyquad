@@ -13,4 +13,9 @@ VALUE quad_tree_north_east(VALUE self);
 VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z);
 VALUE quad_tree_points_within(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west);
 
+VALUE cPoint;
+VALUE point_init(VALUE self, VALUE x, VALUE y, VALUE z);
+VALUE point_new(VALUE class, VALUE x, VALUE y, VALUE z);
+
+
 
