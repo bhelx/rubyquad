@@ -5,7 +5,6 @@ class QuadTree
 
   def points_within(north, south, east, west)
     flat = self.points_within_flat(north, south, east, west)
-
     return nil unless flat.any?
 
     points = []
@@ -15,12 +14,12 @@ class QuadTree
       i += 3
     end
 
-    return points
-
+    points
   end
 
 end
 
+# wanted to implement a c struct for this, maybe later
 class Point
   attr_accessor :x, :y, :z
 end

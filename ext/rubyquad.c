@@ -3,6 +3,9 @@
 #include "rubyquad.h"
 
 
+/**
+ * TODO: encompass this into a module instead of littering main namespace
+ */
 void Init_rubyquad() {
   cQuadTree = rb_define_class("QuadTree", rb_cObject);
   rb_define_singleton_method(cQuadTree, "new", quad_tree_new, 4);
@@ -19,7 +22,6 @@ void Init_rubyquad() {
 }
 
 VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE west) {
-
   QuadTree *tree = createQuadTree(NUM2DBL(north), NUM2DBL(south), NUM2DBL(east), NUM2DBL(west), NULL);
 
   VALUE argv[4];
@@ -27,7 +29,6 @@ VALUE quad_tree_new(VALUE class, VALUE north, VALUE south, VALUE east, VALUE wes
   argv[1] = south;
   argv[2] = east;
   argv[3] = west;
-
 
   VALUE tdata = Data_Wrap_Struct(class, 0, -1, tree);
   rb_obj_call_init(tdata, 4, argv);
@@ -86,10 +87,7 @@ VALUE quad_tree_north_west(VALUE self) {
   return Data_Wrap_Struct(cQuadTree, 0, -1, tree->nW);
 }
 
-
-
 VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
-
   QuadTree *tree;
   Data_Get_Struct(self, QuadTree, tree);
 
@@ -101,9 +99,7 @@ VALUE quad_tree_add_point(VALUE self, VALUE x, VALUE y, VALUE z) {
   return self;
 }
 
-
 VALUE quad_tree_points_within(VALUE self, VALUE north, VALUE south, VALUE east, VALUE west) {
-
   ResultsSet *results = createResultsSet();
   BoundingBox *bbox = createBoundingBox(NUM2DBL(north), NUM2DBL(south), NUM2DBL(east), NUM2DBL(west));
 
@@ -127,7 +123,6 @@ VALUE quad_tree_points_within(VALUE self, VALUE north, VALUE south, VALUE east, 
   free(results);
 
   return flat;
-
 }
 
 
