@@ -43,25 +43,31 @@ Point* createPoint(double x, double y, double z) {
 PointVector* createPointVector() {
   PointVector *pv = ALLOC(PointVector);
   //PointVector *pv = (PointVector *) malloc(sizeof(PointVector));
+
   pv->index = 0;
+
   return pv;
 }
 
 BoundingBox* createBoundingBox(double north, double south, double east, double west) {
   BoundingBox *bbox = ALLOC(BoundingBox);
   //BoundingBox *bbox = (BoundingBox *) malloc(sizeof(BoundingBox));
+
   bbox->west = west;
   bbox->east = east;
   bbox->north = north;
   bbox->south = south;
+
   return bbox;
 }
 
 ResultsSet* createResultsSet() {
   ResultsSet *results = ALLOC(ResultsSet);
   //ResultsSet *results = (ResultsSet *) malloc(sizeof(ResultsSet));
+
   results->index = 0;
   results->isFull = 0;
+
   return results;
 }
 
@@ -77,7 +83,6 @@ void insert(QuadTree *tree, Point *point) {
     }
   }
 }
-
 
 void query(ResultsSet *results, QuadTree *tree, BoundingBox *bbox) {
   if (tree->isBroken) {
@@ -95,8 +100,10 @@ void query(ResultsSet *results, QuadTree *tree, BoundingBox *bbox) {
     }
   } else {//add point vector to results set, assume we have enough space for now
     int i;
+
     for (i = 0; i < tree->pointVector->index; i++) {
       Point *p = tree->pointVector->points[i];
+
       if (pointWithinBox(bbox, p)) {
         results->points[results->index] = p;
         results->index++;
@@ -114,6 +121,7 @@ static int pointWithinBox(BoundingBox *bbox, Point *point) {
 
 void printResults(ResultsSet *results) {
   int i;
+
   for (i = 0; i < results->index; i++) {
     Point *p = results->points[i];
     printf("Point: x=%f    y=%f    z=%f\n", p->x, p->y, p->z);
@@ -127,6 +135,7 @@ void printResults(ResultsSet *results) {
 static void addPointToNode(QuadTree *tree, Point *p) {
   Point *new = createPoint(p->x, p->y, p->z);
   PointVector *pv = tree->pointVector;
+
   pv->points[pv->index] = new;
   pv->index++;
 }
