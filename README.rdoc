@@ -6,6 +6,8 @@ I am purely doing this to learn the ruby vm and language 'the hard way' so to sp
 
 http://en.wikipedia.org/wiki/Quadtree
 
+See the specs for a quick example on how to use it
+
 == Building
 
 * cd into ext
