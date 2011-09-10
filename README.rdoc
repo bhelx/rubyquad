@@ -1,5 +1,11 @@
 = RubyQuad
 
+== About
+
+I am purely doing this to learn the ruby vm and language 'the hard way' so to speak. A QuadTree is a straight forward and efficient data structure for storing and querying on spatial information. A common example of using this code might bt to create a map with lat lng points then creating bounding box queries to find the points within a specific region.
+
+http://en.wikipedia.org/wiki/Quadtree
+
 == Building
 
 * cd into ext

@@ -28,6 +28,7 @@ describe QuadTree do
 
     before :each do
       @quadtree = QuadTree.new(250.0, 0, 250.0, 0.0)
+      # not the best dataset for this algorithm but works for testing
       10000.times do
         args = [rand*250, rand*250, rand*250]
         @quadtree.insert(*args)
